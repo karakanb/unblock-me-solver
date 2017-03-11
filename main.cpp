@@ -1,7 +1,5 @@
-#include <iostream>
 #include <fstream>
 #include "Board.h"
-#include "globals.h"
 
 using namespace std;
 
@@ -10,9 +8,17 @@ int main() {
 
     ifstream dataFile(DATA_FILE_NAME);
 
-    Board board;
-    board.printBoard();
-    board.populateBoard(dataFile);
-    board.printBoard();
-    return 0;
+    try {
+        Board board;
+        board.print();
+        board.populateBoard(dataFile);
+        board.print();
+        board.blocks.pop_back();
+        board.moveBlock(board.blocks.back(), UP);
+        board.print();
+        return 0;
+    } catch (const char * errorMessage) {
+        cerr << errorMessage << endl;
+        return -1;
+    }
 }

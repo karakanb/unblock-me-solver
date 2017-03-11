@@ -31,3 +31,43 @@ bool Block::isHorizontal() {
     return this->direction == HORIZONTAL;
 }
 
+void Block::move(int direction) {
+    if (this->direction == HORIZONTAL) {
+        switch (direction) {
+            case LEFT:
+                if (this->column == 0) {
+                    throw "Block cannot move to LEFT.";
+                }
+                this->column--;
+                break;
+            case RIGHT:
+                if (this->column + this->length == BOARD_SIZE) {
+                    throw "Block cannot move to RIGHT.";
+                }
+                this->column++;
+                break;
+            default:
+                break;
+        }
+    } else {
+        switch (direction) {
+            case UP:
+                if (this->row - this->length + 1 == 0) {
+                    throwError("Block cannot move to up.");
+                }
+
+                this->row--;
+                break;
+            case DOWN:
+                if (this->row == BOARD_SIZE - 1) {
+                    throw "Block cannot move to RIGHT.";
+                }
+
+                this->row++;
+                break;
+            default:
+                break;
+        }
+    }
+}
+

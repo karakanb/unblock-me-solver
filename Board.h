@@ -1,7 +1,3 @@
-//
-// Created by burak on 10.03.2017.
-//
-
 #ifndef HW1_BOARD_H
 #define HW1_BOARD_H
 
@@ -24,17 +20,18 @@ public:
 
     void populateBoard(std::ifstream &dataFile);
 
-    void printBoard();
+    void print();
 
-    bool isEmpty(int row, int column);
+    bool canMove(int row, int column);
 
+    void moveBlock(Block block, int direction);
 
     inline int &operator()(int x, int y) {
         return board[x][y];
     }
 
 private:
-    void fillTheBoard(Block block);
+    void insert(Block block, int idToInsert = -1);
 };
 
 

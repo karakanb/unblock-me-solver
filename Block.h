@@ -7,15 +7,21 @@
 
 #include <iostream>
 #include "globals.h"
+
 class Block {
 public:
     Block(int id, int row, int column, int length, char direction);
 
     Block();
+
     bool isHorizontal();
+
     bool isVertical();
 
     void print();
+
+    void move(int direction);
+
     int id;
     int row;
     int column;
