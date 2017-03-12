@@ -17,10 +17,12 @@ public:
     Board(const Board &obj);
 
     int cells[BOARD_SIZE][BOARD_SIZE] = {{0}};
-    int identifier;
-    int referencer;
+    long identifier;
+    long referencer;
     Block targetBlock;
     vector<Block> blocks;
+
+    long getHash() const;
 
     void populateBoard(std::ifstream &dataFile);
 
@@ -43,7 +45,7 @@ public:
     }
 
     bool operator<(const Board &board) const {
-        return identifier < board.identifier;  //assume that you compare the record based on a
+        return identifier < board.identifier;
     }
 
 private:

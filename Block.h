@@ -20,6 +20,8 @@ public:
 
     void print();
 
+    long hash() const;
+
     void move(int direction);
 
     int id;

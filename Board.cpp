@@ -1,4 +1,3 @@
-#include <assert.h>
 #include "Board.h"
 
 void Board::populateBoard(std::ifstream &dataFile) {
@@ -140,20 +139,28 @@ bool Board::isMovable(int row, int column) {
     return (this->isEmpty(row, column) && this->isOnBoard(row, column));
 }
 
-Board::Board(const Board& board) {
+Board::Board(const Board &board) {
 
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
             this->cells[i][j] = board.cells[i][j];
         }
     }
-    this->identifier = rand();
+    this->identifier = board.getHash();
     this->referencer = board.identifier;
-
     this->targetBlock = board.targetBlock;
     this->blocks = board.blocks;
 }
 
 Board::Board() {
     this->identifier = 0;
+}
+
+long Board::getHash() const {
+    long summedHash = 0;
+    for (vector<Block>::const_iterator it = this->blocks.begin(); it != this->blocks.end(); it++) {
+        summedHash += it->hash();
+    }
+
+    return this->referencer + summedHash;
 }

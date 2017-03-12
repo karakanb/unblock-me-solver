@@ -1,6 +1,6 @@
 #include "Solver.h"
 
-Solver::Solver(const Board board) {
+Solver::Solver(Board board) {
     this->boards.push_back(board);
 }
 
@@ -8,8 +8,16 @@ void Solver::withDFS() {}
 
 void Solver::withBFS() {
     Board board;
+    this->boards.front().identifier = 0;
+    this->pastSteps[this->boards.front().getHash()] = this->boards.front();
+
     while (!this->boards.empty()) {
+
+        // Get the next board and remove it from the list.
         board = this->boards.front();
+
+        // Move the board to the past steps.
+        this->pastSteps[board.getHash()] = board;
         this->boards.pop_front();
 
         if (board.isCompleted()) {
@@ -19,13 +27,15 @@ void Solver::withBFS() {
             return;
         } else {
             Board tempBoard;
+
+            // Construct the possible movement boards and push to the queue.
             for (int i = 0; i < board.blocks.size(); ++i) {
                 if (board.blocks[i].isHorizontal()) {
                     for (int j = LEFT; j <= RIGHT; ++j) {
                         if (board.canMove(board.blocks[i], j)) {
                             tempBoard = board;
                             tempBoard.moveBlock(i, j);
-                            this->boards.push_back(tempBoard);
+                            this->boards.push_back(move(tempBoard));
                         }
                     }
                 } else {
@@ -33,52 +43,20 @@ void Solver::withBFS() {
                         if (board.canMove(board.blocks[i], j)) {
                             tempBoard = board;
                             tempBoard.moveBlock(i, j);
-                            this->boards.push_back(tempBoard);
+                            this->boards.push_back(move(tempBoard));
                         }
                     }
                 }
             }
         }
-        this->pastSteps.push_back(board);
     }
 }
 
 void Solver::constructSolutionSteps(Board board) {
 
     pp("Constructing solution steps...");
-    pp2("Last ref: ", board.referencer);
-    int lastReference = board.referencer;
+    pp2("Last ref: ", board.getHash());
+    long lastReference = board.referencer;
 
-    for (vector<Board>::iterator it = this->pastSteps.end(); it != this->pastSteps.begin(); --it) {
-        //pp2("Identifier: ", it->identifier);
-        if (it->identifier == lastReference) {
-            pp("girdik:");
-            this->steps.push_back(*it);
-            lastReference = it->referencer;
-        }
-
-        //this->boards.erase(it);
-    }
+    pp2("past-step size: ", this->pastSteps.size());
 }
-
-/*
-void Solver::withDFS(Board board) {
-    pp("a");
-    if (board.isCompleted()) {
-        board.print();
-        throwError("Board completed successfully.");
-    } else {
-        int size = (int) board.blocks.size();
-        for (int i = 0; i < size; ++i) {
-            for (int j = LEFT; j <= DOWN; ++j) {
-                if (board.canMove(board.blocks[i], j)) {
-                    board.moveBlock(board.blocks[i], j);
-                    this->withDFS(board);this->seenBoards.find(board) == this->seenBoards.end()
-                }
-            }
-        }
-    }
-}
-*/
-
-

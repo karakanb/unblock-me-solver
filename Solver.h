@@ -7,6 +7,7 @@
 
 #include <deque>
 #include <set>
+#include <map>
 #include "globals.h"
 #include "Board.h"
 
@@ -14,7 +15,7 @@ class Solver {
 public:
     Solver(const Board board);
 
-    vector<Board> pastSteps;
+    map<long, Board> pastSteps;
     deque<Board> boards;
     vector<Board> steps;
     void withBFS();

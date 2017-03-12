@@ -12,11 +12,11 @@ int main() {
 
     try {
         Board board;
-
         board.populateBoard(dataFile);
-        board.print();
-
         dataFile.close();
+
+        board.print();
+        pp2("id: ", board.identifier);
 
         Solver solver(board);
         solver.withBFS();

@@ -71,3 +71,7 @@ void Block::move(int direction) {
     }
 }
 
+long Block::hash() const {
+    return this->id | this->row << 8 | this->column << 16;
+}
+
