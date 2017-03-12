@@ -14,7 +14,11 @@ class Board {
 public:
     Board();
 
-    int board[BOARD_SIZE][BOARD_SIZE] = {{0}};
+    Board(const Board &obj);
+
+    int cells[BOARD_SIZE][BOARD_SIZE] = {{0}};
+    int identifier;
+    int referencer;
     Block targetBlock;
     vector<Block> blocks;
 
@@ -22,16 +26,30 @@ public:
 
     void print();
 
-    bool canMove(int row, int column);
+    bool canMove(Block block, int direction);
 
-    void moveBlock(Block block, int direction);
+    bool isEmpty(int row, int column);
+
+    bool isCompleted();
+
+    Block getPrisoner();
+
+    void moveBlock(int index, int direction);
+
+    void insert(Block block, int idToInsert = -1);
 
     inline int &operator()(int x, int y) {
-        return board[x][y];
+        return cells[x][y];
+    }
+
+    bool operator<(const Board &board) const {
+        return identifier < board.identifier;  //assume that you compare the record based on a
     }
 
 private:
-    void insert(Block block, int idToInsert = -1);
+    bool isOnBoard(int row, int column);
+
+    bool isMovable(int row, int column);
 };
 
 

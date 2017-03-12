@@ -13,16 +13,23 @@
 
 #define pp(x)  cout << x << endl;
 
+#define pp2(x,y)  cout << x << " " <<   y << endl;
+
 enum {
     LEFT, RIGHT, UP, DOWN
 };
 
-inline void throwError(const char *errorMessage) {
+inline void throwError(const char *errorMessage, int blockId = -1) {
     std::string errorString(errorMessage);
-    std::cout << errorString << std::endl;
     std::string seperator("\n   \n===========================\n\n");
-    errorString = seperator + errorString + seperator;
-    std::cout << errorString << std::endl;
+    errorString = seperator + errorString;
+    if (blockId != -1) {
+        std::string blockMessage(" Block ID: ");
+        errorString = errorString + blockMessage + std::to_string(blockId);
+    }
+
+    errorString += seperator;
+
     throw errorString;
 }
 

@@ -1,24 +1,42 @@
 #include <fstream>
 #include "Board.h"
+#include "Solver.h"
 
 using namespace std;
 
-
 int main() {
+
+    srand(time(NULL));
 
     ifstream dataFile(DATA_FILE_NAME);
 
     try {
         Board board;
-        board.print();
+
         board.populateBoard(dataFile);
         board.print();
-        board.blocks.pop_back();
-        board.moveBlock(board.blocks.back(), UP);
-        board.print();
+
+        dataFile.close();
+
+        Solver solver(board);
+        solver.withBFS();
+
+        pp("===========================");
+        pp2("Count: ", solver.steps.size());
+        for (vector<Board>::iterator it = solver.steps.begin(); it != solver.steps.end(); ++it) {
+            it->print();
+        }
+
+        pp("\n\nBittiiiii.\n\n");
+
         return 0;
-    } catch (const char * errorMessage) {
+    } catch (string errorMessage) {
         cerr << errorMessage << endl;
+
+
+        return -1;
+    } catch (const char *m) {
+        cerr << m << endl;
         return -1;
     }
 }

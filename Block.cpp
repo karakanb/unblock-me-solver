@@ -19,7 +19,7 @@ Block::Block(int id, int row, int column, int length, char direction) : row(row)
 Block::Block() {}
 
 void Block::print() {
-    cout << "id: " << this->id << " - x: " << this->row << " - y: " << this->column << " - length: " << this->length
+    cout << "id: " << this->id << " - row: " << this->row << " - col: " << this->column << " - length: " << this->length
          << " - dir: " << this->direction << endl;
 }
 
@@ -32,17 +32,17 @@ bool Block::isHorizontal() {
 }
 
 void Block::move(int direction) {
-    if (this->direction == HORIZONTAL) {
+    if (this->isHorizontal()) {
         switch (direction) {
             case LEFT:
                 if (this->column == 0) {
-                    throw "Block cannot move to LEFT.";
+                    throwError("Block cannot move LEFT.", this->id);
                 }
                 this->column--;
                 break;
             case RIGHT:
                 if (this->column + this->length == BOARD_SIZE) {
-                    throw "Block cannot move to RIGHT.";
+                    throwError("Block cannot move RIGHT.", this->id);
                 }
                 this->column++;
                 break;
@@ -53,14 +53,14 @@ void Block::move(int direction) {
         switch (direction) {
             case UP:
                 if (this->row - this->length + 1 == 0) {
-                    throwError("Block cannot move to up.");
+                    throwError("Block cannot move up.", this->id);
                 }
 
                 this->row--;
                 break;
             case DOWN:
                 if (this->row == BOARD_SIZE - 1) {
-                    throw "Block cannot move to RIGHT.";
+                    throwError("Block cannot move down.", this->id);
                 }
 
                 this->row++;

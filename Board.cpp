@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "Board.h"
 
 void Board::populateBoard(std::ifstream &dataFile) {
@@ -9,6 +10,7 @@ void Board::populateBoard(std::ifstream &dataFile) {
     // Get the target block.
     dataFile >> row >> column >> length >> direction;
     this->targetBlock = Block(id++, row - 1, column - 1, length, direction);
+    this->blocks.push_back(this->targetBlock);
     this->insert(this->targetBlock);
 
     // Collect the other blocks.
@@ -16,13 +18,12 @@ void Board::populateBoard(std::ifstream &dataFile) {
         // Construct a temporary block.
         tempBlock = Block(id++, row - 1, column - 1, length, direction);
 
-        // Fill the board storage variables.
+        // Fill the cells storage variables.
         this->blocks.push_back(tempBlock);
         this->insert(tempBlock);
     }
 }
 
-Board::Board() {}
 
 /**
  * Place the given variable into the board array.
@@ -33,13 +34,13 @@ void Board::insert(Block block, int idToInsert) {
         idToInsert = block.id;
     }
 
-    if (block.direction == HORIZONTAL) {
+    if (block.isHorizontal()) {
         for (int i = block.column; i < block.column + block.length; ++i) {
-            this->board[block.row][i] = idToInsert;
+            this->cells[block.row][i] = idToInsert;
         }
     } else {
         for (int i = block.row; i > block.row - block.length; --i) {
-            this->board[i][block.column] = idToInsert;
+            this->cells[i][block.column] = idToInsert;
         }
     }
 }
@@ -48,21 +49,111 @@ void Board::insert(Block block, int idToInsert) {
  * Pretty print the board.
  */
 void Board::print() {
-    cout << endl << "===========================" << endl;
+    cout << endl << "===========================" << endl << endl;
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
-            cout << board[i][j] << " ";
+            cout << cells[i][j] << " ";
         }
         cout << endl;
     }
+    cout << endl << "===========================" << endl;
 }
 
-bool Board::canMove(int row, int column) {
-    return (row < 6 && column > 6 && this->board[row][column] == 0);
+bool Board::canMove(Block block, int direction) {
+    bool canMoveThere = false;
+    int row = block.row;
+    int column = block.column;
+    int length = block.length;
+
+    if (block.isHorizontal()) {
+        switch (direction) {
+            case LEFT:
+                if (isMovable(row, column - 1)) {
+                    canMoveThere = true;
+                }
+                break;
+            case RIGHT:
+                if (isMovable(row, column + length)) {
+                    canMoveThere = true;
+                }
+                break;
+            default:
+                break;
+        }
+    } else {
+        switch (direction) {
+            case UP:
+                if (isMovable(row - length, column)) {
+                    canMoveThere = true;
+                }
+                break;
+            case DOWN:
+                if (isMovable(row + 1, column)) {
+                    canMoveThere = true;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    /*
+    pp("--");
+    pp2("BlockId: ", block.id);
+    pp2("direction: ", direction);
+    pp2("can it move: ", canMoveThere);
+    pp("--");
+     */
+    return canMoveThere;
 }
 
-void Board::moveBlock(Block block, int direction) {
-    this->insert(block, 0);
-    block.move(direction);
-    this->insert(block);
+void Board::moveBlock(int index, int direction) {
+    this->insert(this->blocks[index], 0);
+    this->blocks[index].move(direction);
+    this->insert(this->blocks[index]);
+}
+
+Block Board::getPrisoner() {
+    return this->blocks.front();
+}
+
+bool Board::isEmpty(int row, int column) {
+    return (this->cells[row][column] == 0);
+}
+
+bool Board::isCompleted() {
+    Block blockToSave = this->getPrisoner();
+    int heroIndex = blockToSave.column + blockToSave.length;
+    for (int i = heroIndex; i < BOARD_SIZE; ++i) {
+        if (!this->isEmpty(blockToSave.row, i)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool Board::isOnBoard(int row, int column) {
+    return (row >= 0 && row < BOARD_SIZE && column >= 0 && column < BOARD_SIZE);
+}
+
+bool Board::isMovable(int row, int column) {
+    return (this->isEmpty(row, column) && this->isOnBoard(row, column));
+}
+
+Board::Board(const Board& board) {
+
+    for (int i = 0; i < BOARD_SIZE; ++i) {
+        for (int j = 0; j < BOARD_SIZE; ++j) {
+            this->cells[i][j] = board.cells[i][j];
+        }
+    }
+    this->identifier = rand();
+    this->referencer = board.identifier;
+
+    this->targetBlock = board.targetBlock;
+    this->blocks = board.blocks;
+}
+
+Board::Board() {
+    this->identifier = 0;
 }
