@@ -10,20 +10,6 @@ Solver::Solver(Board board) {
 }
 
 /**
- * Solve the puzzle with DFS.
- */
-void Solver::withDFS() {
-    this->baseSolution(DFS);
-}
-
-/**
- * Solve the puzzle with BFS.
- */
-void Solver::withBFS() {
-    this->baseSolution(BFS);
-}
-
-/**
  * Construct the solution steps from the pastSteps vector by using the reference chain.
  * @param board
  */
@@ -38,6 +24,9 @@ void Solver::constructSolutionSteps(Board board) {
         this->steps.push_back(this->pastSteps[lastReference]);
         lastReference = this->pastSteps[lastReference].referrer;
     }
+
+    // Push the initial state of the board to the vector.
+    this->steps.push_back(this->pastSteps[0]);
 
     // Remove the useless past steps.
     this->pastSteps.clear();
@@ -67,7 +56,7 @@ Board Solver::createMovedInstance(Board board, int blockIndex, int direction) {
  * Base solution for both BFS and DFS.
  * @param algorithm
  */
-void Solver::baseSolution(int algorithm) {
+void Solver::solve(int algorithm) {
     Board board;
 
     // Loop over the queue until either the queue is empty or the solution is found.
@@ -80,8 +69,7 @@ void Solver::baseSolution(int algorithm) {
         // Check if the board is solved completely.
         if (board.isCompleted()) {
 
-            // The board is completed, print succeeded solution and construct the steps.
-            board.print();
+            // The board is completed construct the solution steps.
             this->boards.clear();
             this->constructSolutionSteps(board);
             return;

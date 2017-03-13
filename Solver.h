@@ -1,7 +1,3 @@
-//
-// Created by burak on 11.03.2017.
-//
-
 #ifndef UNLOCK_ME_SOLVER_SOLVER_H
 #define UNLOCK_ME_SOLVER_SOLVER_H
 
@@ -18,12 +14,8 @@ public:
     deque<Board> boards;
     vector<Board> steps;
 
-    void withBFS();
-
-    void withDFS();
-
+    void solve(int algorithm);
 private:
-    void baseSolution(int algorithm);
 
     void constructSolutionSteps(Board board);
 

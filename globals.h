@@ -11,7 +11,7 @@
 #define VERTICAL 1
 
 #define pp(x)  cout << x << endl;
-#define pp2(x,y)  cout << x << " " <<   y << endl;
+#define pp2(x, y)  cout << x << " " <<   y << endl;
 
 
 enum {

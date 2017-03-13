@@ -2,6 +2,15 @@
 
 using namespace std;
 
+/**
+ * Base block constructor.
+ * @param id
+ * @param row
+ * @param column
+ * @param length
+ * @param direction
+ * @return
+ */
 Block::Block(int id, int row, int column, int length, char direction) : row(row), column(column), length(length),
                                                                         direction(direction) {
     this->id = id;
@@ -16,21 +25,32 @@ Block::Block(int id, int row, int column, int length, char direction) : row(row)
     }
 }
 
+/**
+ * Empty constructor.
+ * @return
+ */
 Block::Block() {}
 
+/**
+ * Print the block - useful for debugging.
+ */
 void Block::print() {
     cout << "id: " << this->id << " - row: " << this->row << " - col: " << this->column << " - length: " << this->length
          << " - dir: " << this->direction << endl;
 }
 
-bool Block::isVertical() {
-    return this->direction == VERTICAL;
-}
-
+/**
+ * Check if the block is horizontal.
+ * @return
+ */
 bool Block::isHorizontal() {
     return this->direction == HORIZONTAL;
 }
 
+/**
+ * Move the block to the specified direction, also does error checking.
+ * @param direction
+ */
 void Block::move(int direction) {
     if (this->isHorizontal()) {
         switch (direction) {
@@ -38,12 +58,14 @@ void Block::move(int direction) {
                 if (this->column == 0) {
                     throwError("Block cannot move LEFT.", this->id);
                 }
+
                 this->column--;
                 break;
             case RIGHT:
                 if (this->column + this->length == BOARD_SIZE) {
                     throwError("Block cannot move RIGHT.", this->id);
                 }
+
                 this->column++;
                 break;
             default:

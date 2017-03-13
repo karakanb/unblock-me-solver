@@ -1,7 +1,3 @@
-//
-// Created by burak on 10.03.2017.
-//
-
 #ifndef HW1_BLOCK_H
 #define HW1_BLOCK_H
 
@@ -15,8 +11,6 @@ public:
     Block();
 
     bool isHorizontal();
-
-    bool isVertical();
 
     void print();
 

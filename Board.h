@@ -12,39 +12,41 @@ using namespace std;
 
 class Board {
 public:
-    Board();
-
-    Board(const Board &obj);
-
     int cells[BOARD_SIZE][BOARD_SIZE] = {{0}};
     long identifier;
     long referrer;
     vector<Block> blocks;
 
-    void populateBoard(std::ifstream &dataFile);
+    Board();
 
-    void print();
+    Board(const Board &obj);
+
+    void populateBoard(std::ifstream &dataFile);
+    void exportToFile(std::ofstream &outputFile);
+
+    void print(const string messageToPrint = "");
 
     bool canMove(Block block, int direction);
 
-    bool isEmpty(int row, int column);
-
-    bool isCompleted();
-
-    Block getPrisoner();
-
     void moveBlock(int index, int direction);
 
-    void insert(Block block, int idToInsert = -1);
+    bool isCompleted();
 
     bool operator<(const Board &board) const {
         return identifier < board.identifier;
     }
 
 private:
-    bool isOnBoard(int row, int column);
+
+    void insert(Block block, int idToInsert = -1);
+
+    Block getTargetBlock();
 
     bool isMovable(int row, int column);
+
+    bool isOnBoard(int row, int column);
+
+    bool isEmpty(int row, int column);
 };
 
 
