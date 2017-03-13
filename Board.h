@@ -18,11 +18,8 @@ public:
 
     int cells[BOARD_SIZE][BOARD_SIZE] = {{0}};
     long identifier;
-    long referencer;
-    Block targetBlock;
+    long referrer;
     vector<Block> blocks;
-
-    long getHash() const;
 
     void populateBoard(std::ifstream &dataFile);
 
@@ -39,10 +36,6 @@ public:
     void moveBlock(int index, int direction);
 
     void insert(Block block, int idToInsert = -1);
-
-    inline int &operator()(int x, int y) {
-        return cells[x][y];
-    }
 
     bool operator<(const Board &board) const {
         return identifier < board.identifier;

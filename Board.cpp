@@ -1,16 +1,11 @@
 #include "Board.h"
 
+// Populate the board from the file.
 void Board::populateBoard(std::ifstream &dataFile) {
     int row, column, length;
     int id = 1;
     char direction;
     Block tempBlock;
-
-    // Get the target block.
-    dataFile >> row >> column >> length >> direction;
-    this->targetBlock = Block(id++, row - 1, column - 1, length, direction);
-    this->blocks.push_back(this->targetBlock);
-    this->insert(this->targetBlock);
 
     // Collect the other blocks.
     while (dataFile >> row >> column >> length >> direction) {
@@ -29,10 +24,13 @@ void Board::populateBoard(std::ifstream &dataFile) {
  * @param block
  */
 void Board::insert(Block block, int idToInsert) {
+
+    // If the ID is not specified, use the block's id.
     if (idToInsert == -1) {
         idToInsert = block.id;
     }
 
+    // Insert the values into the 2D board array with IDs for move checks and visualization.
     if (block.isHorizontal()) {
         for (int i = block.column; i < block.column + block.length; ++i) {
             this->cells[block.row][i] = idToInsert;
@@ -48,16 +46,22 @@ void Board::insert(Block block, int idToInsert) {
  * Pretty print the board.
  */
 void Board::print() {
-    cout << endl << "===========================" << endl << endl;
+    printSeperator();
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
             cout << cells[i][j] << " ";
         }
         cout << endl;
     }
-    cout << endl << "===========================" << endl;
+    printSeperator();
 }
 
+/**
+ * Check if the block can move to the specified direction.
+ * @param block     - Block to move.
+ * @param direction - Direction to move.
+ * @return          - If it can move or not.
+ */
 bool Board::canMove(Block block, int direction) {
     bool canMoveThere = false;
     int row = block.row;
@@ -95,13 +99,6 @@ bool Board::canMove(Block block, int direction) {
                 break;
         }
     }
-    /*
-    pp("--");
-    pp2("BlockId: ", block.id);
-    pp2("direction: ", direction);
-    pp2("can it move: ", canMoveThere);
-    pp("--");
-     */
     return canMoveThere;
 }
 
@@ -146,21 +143,12 @@ Board::Board(const Board &board) {
             this->cells[i][j] = board.cells[i][j];
         }
     }
-    this->identifier = board.getHash();
-    this->referencer = board.identifier;
-    this->targetBlock = board.targetBlock;
+    this->identifier = board.identifier;
+    this->referrer = board.referrer;
     this->blocks = board.blocks;
 }
 
 Board::Board() {
     this->identifier = 0;
-}
-
-long Board::getHash() const {
-    long summedHash = 0;
-    for (vector<Block>::const_iterator it = this->blocks.begin(); it != this->blocks.end(); it++) {
-        summedHash += it->hash();
-    }
-
-    return this->referencer + summedHash;
+    this->referrer = 0;
 }

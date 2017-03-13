@@ -6,7 +6,6 @@
 #define UNLOCK_ME_SOLVER_SOLVER_H
 
 #include <deque>
-#include <set>
 #include <map>
 #include "globals.h"
 #include "Board.h"
@@ -18,11 +17,17 @@ public:
     map<long, Board> pastSteps;
     deque<Board> boards;
     vector<Board> steps;
+
     void withBFS();
+
     void withDFS();
 
 private:
+    void baseSolution(int algorithm);
+
     void constructSolutionSteps(Board board);
+
+    Board createMovedInstance(Board board, int blockIndex, int direction);
 };
 
 

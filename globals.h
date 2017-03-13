@@ -6,22 +6,29 @@
 
 #define DATA_FILE_NAME "blocks.txt"
 #define BOARD_SIZE 6
+
 #define HORIZONTAL 0
 #define VERTICAL 1
-#define ESCAPE_X 3
-#define ESCAPE_Y 6
 
 #define pp(x)  cout << x << endl;
-
 #define pp2(x,y)  cout << x << " " <<   y << endl;
+
 
 enum {
     LEFT, RIGHT, UP, DOWN
 };
 
+enum {
+    BFS, DFS
+};
+
+inline void printSeperator() {
+    std::cout << std::endl << "===========================" << std::endl << std::endl;
+}
+
 inline void throwError(const char *errorMessage, int blockId = -1) {
     std::string errorString(errorMessage);
-    std::string seperator("\n   \n===========================\n\n");
+    std::string seperator("\n\n===========================\n\n");
     errorString = seperator + errorString;
     if (blockId != -1) {
         std::string blockMessage(" Block ID: ");

@@ -14,16 +14,14 @@ int main() {
         Board board;
         board.populateBoard(dataFile);
         dataFile.close();
-
         board.print();
-        pp2("id: ", board.identifier);
 
         Solver solver(board);
         solver.withBFS();
 
         pp("===========================");
         pp2("Count: ", solver.steps.size());
-        for (vector<Board>::iterator it = solver.steps.begin(); it != solver.steps.end(); ++it) {
+        for (vector<Board>::reverse_iterator it = solver.steps.rbegin(); it != solver.steps.rend(); ++it) {
             it->print();
         }
 
