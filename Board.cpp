@@ -204,5 +204,16 @@ bool Board::isOnBoard(int row, int column) {
 }
 
 void Board::exportToFile(std::ofstream &outputFile) {
-    // TODO: Write file export method here.
+    char direction;
+
+    // Iterate over the blocks and write to the given output file.
+    for (vector<Block>::iterator it = this->blocks.begin(); it != this->blocks.end(); it++) {
+        if(it->direction == HORIZONTAL) {
+            direction = 'h';
+        } else {
+            direction = 'v';
+        }
+
+        outputFile << it->row + 1 << " " << it->column + 1 << " " << it->length << " " << direction << endl;
+    }
 }
