@@ -16,20 +16,24 @@ Solver::Solver(Board board) {
 void Solver::constructSolutionSteps(Board board) {
 
     // Process the solution board first.
-    long lastReference = board.referrer;
+    string lastReference = board.referrer;
     this->steps.push_back(board);
 
     // Construct the solution steps from the reference chain.
-    while (lastReference != 0) {
+    while (lastReference != "") {
         this->steps.push_back(this->pastSteps[lastReference]);
         lastReference = this->pastSteps[lastReference].referrer;
     }
 
+    // Get the number of steps taken to find the solution.
+    this->numberOfNodes = this->pastSteps.size();
+
     // Push the initial state of the board to the vector.
-    this->steps.push_back(this->pastSteps[0]);
+    this->steps.push_back((this->pastSteps.begin())->second);
 
     // Remove the useless past steps.
     this->pastSteps.clear();
+    return;
 }
 
 /**
@@ -44,7 +48,7 @@ Board Solver::createMovedInstance(Board board, int blockIndex, int direction) {
     tempBoard = board;
 
     // Set the identifier to a random number while setting the referrer to the previous board's identifier.
-    tempBoard.identifier = rand();
+    tempBoard.identifier = board.getHash();
     tempBoard.referrer = board.identifier;
 
     // Move the block
@@ -71,6 +75,7 @@ void Solver::solve(int algorithm) {
 
             // The board is completed construct the solution steps.
             this->boards.clear();
+            board.print();
             this->constructSolutionSteps(board);
             return;
         } else {
@@ -83,10 +88,12 @@ void Solver::solve(int algorithm) {
                         // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
                         if (board.canMove(board.blocks[i], j)) {
                             tempBoard = this->createMovedInstance(board, i, j);
-                            if (algorithm == BFS) {
-                                this->boards.push_back(tempBoard);
-                            } else {
-                                this->boards.push_front(tempBoard);
+                            if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end()) {
+                                if (algorithm == BFS) {
+                                    this->boards.push_back(tempBoard);
+                                } else {
+                                    this->boards.push_front(tempBoard);
+                                }
                             }
                         }
                     }
@@ -95,10 +102,12 @@ void Solver::solve(int algorithm) {
                         // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
                         if (board.canMove(board.blocks[i], j)) {
                             tempBoard = this->createMovedInstance(board, i, j);
-                            if (algorithm == BFS) {
-                                this->boards.push_back(tempBoard);
-                            } else {
-                                this->boards.push_front(tempBoard);
+                            if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end()) {
+                                if (algorithm == BFS) {
+                                    this->boards.push_back(tempBoard);
+                                } else {
+                                    this->boards.push_front(tempBoard);
+                                }
                             }
                         }
                     }

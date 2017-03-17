@@ -10,7 +10,8 @@ class Solver {
 public:
     Solver(const Board board);
 
-    map<long, Board> pastSteps;
+    unsigned long numberOfNodes = 0;
+    map<string, Board> pastSteps;
     deque<Board> boards;
     vector<Board> steps;
 

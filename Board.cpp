@@ -23,8 +23,8 @@ Board::Board(const Board &board) {
  * @return
  */
 Board::Board() {
-    this->identifier = 0;
-    this->referrer = 0;
+    this->identifier = string();
+    this->referrer = string();
 }
 
 /**
@@ -51,7 +51,7 @@ void Board::populateBoard(std::ifstream &dataFile) {
 /**
  * Pretty print the board.
  */
-void Board::print(const string messageToPrint ) {
+void Board::print(const string messageToPrint) {
     printSeperator();
     pp(messageToPrint);
     for (int i = 0; i < BOARD_SIZE; ++i) {
@@ -208,7 +208,7 @@ void Board::exportToFile(std::ofstream &outputFile) {
 
     // Iterate over the blocks and write to the given output file.
     for (vector<Block>::iterator it = this->blocks.begin(); it != this->blocks.end(); it++) {
-        if(it->direction == HORIZONTAL) {
+        if (it->direction == HORIZONTAL) {
             direction = 'h';
         } else {
             direction = 'v';
@@ -216,4 +216,15 @@ void Board::exportToFile(std::ofstream &outputFile) {
 
         outputFile << it->row + 1 << " " << it->column + 1 << " " << it->length << " " << direction << endl;
     }
+}
+
+std::string Board::getHash() {
+    string hash = string();
+    for (int i = 0; i < BOARD_SIZE; ++i) {
+        for (int j = 0; j < BOARD_SIZE; ++j) {
+            hash = hash + std::to_string(this->cells[i][j]);
+        }
+    }
+
+    return hash;
 }

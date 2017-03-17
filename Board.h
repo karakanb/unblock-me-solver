@@ -13,8 +13,8 @@ using namespace std;
 class Board {
 public:
     int cells[BOARD_SIZE][BOARD_SIZE] = {{0}};
-    long identifier;
-    long referrer;
+    string identifier;
+    string referrer;
     vector<Block> blocks;
 
     Board();
@@ -22,7 +22,10 @@ public:
     Board(const Board &obj);
 
     void populateBoard(std::ifstream &dataFile);
+
     void exportToFile(std::ofstream &outputFile);
+
+    string getHash();
 
     void print(const string messageToPrint = "");
 
@@ -33,7 +36,7 @@ public:
     bool isCompleted();
 
     bool operator<(const Board &board) const {
-        return identifier < board.identifier;
+        return (bool) (identifier.compare(board.identifier));
     }
 
 private:

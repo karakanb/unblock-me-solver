@@ -4,8 +4,8 @@
 #include <iostream>
 #include <string>
 
-#define DATA_FILE_NAME "blocks.txt"
 #define BOARD_SIZE 6
+#define EMPTY_REFERENCE "---"
 
 #define HORIZONTAL 0
 #define VERTICAL 1
