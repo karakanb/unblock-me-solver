@@ -15,6 +15,9 @@ Solver::Solver(Board board) {
  */
 void Solver::constructSolutionSteps(Board board) {
 
+    // Remove the possible boards.
+    this->boards.clear();
+
     // Process the solution board first.
     string lastReference = board.referrer;
     this->steps.push_back(board);
@@ -34,8 +37,6 @@ void Solver::constructSolutionSteps(Board board) {
     // Remove the useless past steps.
     this->pastSteps.clear();
 
-    // Remove the possible boards.
-    this->boards.clear();
     return;
 }
 
