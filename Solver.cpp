@@ -33,6 +33,9 @@ void Solver::constructSolutionSteps(Board board) {
 
     // Remove the useless past steps.
     this->pastSteps.clear();
+
+    // Remove the possible boards.
+    this->boards.clear();
     return;
 }
 

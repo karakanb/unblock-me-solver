@@ -1,7 +1,6 @@
 #ifndef HW1_BLOCK_H
 #define HW1_BLOCK_H
 
-#include <iostream>
 #include "globals.h"
 
 class Block {

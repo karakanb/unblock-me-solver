@@ -1,7 +1,6 @@
 #ifndef HW1_BOARD_H
 #define HW1_BOARD_H
 
-#include <iostream>
 #include <fstream>
 #include <vector>
 #include "Block.h"

@@ -5,7 +5,6 @@
 #include <string>
 
 #define BOARD_SIZE 6
-#define EMPTY_REFERENCE "---"
 
 #define HORIZONTAL 0
 #define VERTICAL 1
