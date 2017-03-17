@@ -203,6 +203,10 @@ bool Board::isOnBoard(int row, int column) {
     return (row >= 0 && row < BOARD_SIZE && column >= 0 && column < BOARD_SIZE);
 }
 
+/**
+ * Export the board to the given file with the style of input file.
+ * @param outputFile
+ */
 void Board::exportToFile(std::ofstream &outputFile) {
     char direction;
 
@@ -218,6 +222,10 @@ void Board::exportToFile(std::ofstream &outputFile) {
     }
 }
 
+/**
+ * Get the hash of the board by concatenating row ids.
+ * @return
+ */
 std::string Board::getHash() {
     string hash = string();
     for (int i = 0; i < BOARD_SIZE; ++i) {

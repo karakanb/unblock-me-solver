@@ -75,7 +75,6 @@ void Solver::solve(int algorithm) {
 
             // The board is completed construct the solution steps.
             this->boards.clear();
-            board.print();
             this->constructSolutionSteps(board);
             return;
         } else {
