@@ -1,9 +1,9 @@
-../.idea/
+.idea/
 CMakeCache.txt
 CMakeFiles/
 Makefile
 *.cmake
-unlock-me-solver
+unblock-me-solver
 
 ### C++ ###
 # Prerequisites
