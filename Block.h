@@ -1,5 +1,5 @@
-#ifndef HW1_BLOCK_H
-#define HW1_BLOCK_H
+#ifndef UNBLOCK_ME_SOLVER_BLOCK_H
+#define UNBLOCK_ME_SOLVER_BLOCK_H
 
 #include "globals.h"
 
@@ -23,4 +23,4 @@ public:
 };
 
 
-#endif //HW1_BLOCK_H
+#endif //UNBLOCK_ME_SOLVER_BLOCK_H

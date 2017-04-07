@@ -1,5 +1,5 @@
-#ifndef UNLOCK_ME_SOLVER_SOLVER_H
-#define UNLOCK_ME_SOLVER_SOLVER_H
+#ifndef UNBLOCK_ME_SOLVER_SOLVER_H
+#define UNBLOCK_ME_SOLVER_SOLVER_H
 
 #include <deque>
 #include <map>
@@ -24,4 +24,4 @@ private:
 };
 
 
-#endif //UNLOCK_ME_SOLVER_SOLVER_H
+#endif //UNBLOCK_ME_SOLVER_SOLVER_H

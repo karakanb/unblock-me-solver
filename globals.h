@@ -1,5 +1,5 @@
-#ifndef HW1_GLOBALS_H
-#define HW1_GLOBALS_H
+#ifndef UNBLOCK_ME_SOLVER_GLOBALS_H
+#define UNBLOCK_ME_SOLVER_GLOBALS_H
 
 #include <iostream>
 #include <string>
@@ -40,4 +40,4 @@ inline void throwError(const char *errorMessage, int blockId = -1) {
 }
 
 
-#endif //HW1_GLOBALS_H
+#endif //UNBLOCK_ME_SOLVER_GLOBALS_H

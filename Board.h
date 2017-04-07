@@ -1,5 +1,5 @@
-#ifndef HW1_BOARD_H
-#define HW1_BOARD_H
+#ifndef UNBLOCK_ME_SOLVER_BOARD_H
+#define UNBLOCK_ME_SOLVER_BOARD_H
 
 #include <fstream>
 #include <vector>
@@ -52,4 +52,4 @@ private:
 };
 
 
-#endif //HW1_BOARD_H
+#endif //UNBLOCK_ME_SOLVER_BOARD_H
