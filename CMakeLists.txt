@@ -3,6 +3,6 @@ project(unblock-me-solver)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp Board.cpp Board.h Block.cpp Block.h globals.h Solver.cpp Solver.h)
+set(SOURCE_FILES src/main.cpp src/Board.cpp src/Board.h src/Block.cpp src/Block.h src/globals.h src/Solver.cpp src/Solver.h)
 
 add_executable(unblock-me-solver ${SOURCE_FILES})
