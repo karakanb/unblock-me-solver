@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
         std::chrono::duration<double> runningTime = finish - start;
         pp("The puzzle is solved.");
         pp2("The total time in seconds the algorithm took to solve the puzzle: ", runningTime.count());
-        pp2("The total number of steps taken to find the solution including the initial state: ",
+        pp2("The total number of boards seen to find the solution including the initial state: ",
             solution.numberOfNodes);
         pp("The block with 1s represent the block which is asked to be rescued.");
         pp("The output states are written to the output file you provided.");
