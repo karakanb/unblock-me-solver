@@ -1,6 +1,8 @@
 # Unblock Me Solver
 The Unblock Me game was a game that was popular when I was in high school, and we spent a lot of time on it. After years, when the project to solve Unblock Me in *Analysis of Algorithms* course, it became exciting to work on the game I spent a lot of time with, which led to the implementation of this project. 
 In case you don't know what the Unblock Me is, it is a simple game where you move blocks to take your target block out, as follows:
+   
+   
 ![Unblock Me Screenshot](http://logonubul.com/images/unblock-me.png)
 
 The aim was to solve this game by using two of the most popular search algorithms: *BFS* and *DFS*.
@@ -16,11 +18,11 @@ It basically moves every block on the board, creates a new board with the moved 
 The following 3 lines of code is the heart of this traceback process.
 
 ```C++
-    // Construct the solution steps from the reference chain.
-    while (lastReference != "") {
-        this->steps.push_back(this->pastSteps[lastReference]);
-        lastReference = this->pastSteps[lastReference].referrer;
-    }
+// Construct the solution steps from the reference chain.
+while (lastReference != "") {
+    this->steps.push_back(this->pastSteps[lastReference]);
+    lastReference = this->pastSteps[lastReference].referrer;
+}
 ```
 
 ## Compiling and Running
@@ -39,8 +41,10 @@ The `make` command will create an exacutable called `unblock-me-solver.out`, whi
 
 Available algorithm types are `bfs` and `dfs`, therefore the program can be run exactly with one of the following commands:
 
-`./unblock-me-solver.out dfs data/input.txt data/output.txt # With DFS`
-`./unblock-me-solver.out bfs data/input.txt data/output.txt # With BFS`
+```
+./unblock-me-solver.out dfs data/input.txt data/output.txt # With DFS
+./unblock-me-solver.out bfs data/input.txt data/output.txt # With BFS
+```
 
 The program will output the initial state of the board, the steps used to get to the solution, and the basic statistics such as running time and number of steps:
 
@@ -158,7 +162,7 @@ With BFS, it took 5 steps to solve the example board in 0.517799 seconds. With D
 In order to learn more about breadth-first search and depth-first search, the Wikipedia pages for [BFS](https://en.wikipedia.org/wiki/Breadth-first_search) and [DFS](https://en.wikipedia.org/wiki/Depth-first_search) and their *External Links* sections may be helpful.
 
 ## Credits
-The base idea of the project is inspired by the amazing work that is done by [Thanassis Tsiodras](https://github.com/ttsiodras). His blog post about the subject can be found [here](https://www.thanassis.space/unblock.html), where he uses the iOS version of the application and by processing the screenshot of the board, he maps the board to a software-based representation, where he uses breadth-first search to find the solution board. The code he used can be found [in this GitHub repository.](https://github.com/ttsiodras/UnblockMeSolver).
+The base idea of the project is inspired by the amazing work that is done by [Thanassis Tsiodras](https://github.com/ttsiodras). His blog post about the subject can be found [here](https://www.thanassis.space/unblock.html), where he uses the iOS version of the application and by processing the screenshot of the board, he maps the board to a software-based representation, where he uses breadth-first search to find the solution board. The code he used can be found [in this GitHub repository](https://github.com/ttsiodras/UnblockMeSolver).
 
 ## License
 The project is licensed under MIT License.
