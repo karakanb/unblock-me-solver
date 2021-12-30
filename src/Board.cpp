@@ -56,7 +56,11 @@ void Board::print(const string messageToPrint) {
     pp(messageToPrint);
     for (int i = 0; i < BOARD_SIZE; ++i) {
         for (int j = 0; j < BOARD_SIZE; ++j) {
-            cout << cells[i][j] << " ";
+            if (cells[i][j] == 0) {
+                cout << ". ";
+            } else {
+                cout << static_cast<char>(cells[i][j] + 64) << " ";
+            }
         }
         cout << endl;
     }
