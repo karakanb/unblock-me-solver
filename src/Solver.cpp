@@ -6,7 +6,7 @@
  * @return
  */
 Solver::Solver(Board board) {
-    this->boards.push_back(board);
+    this->board = board;
 }
 
 /**
@@ -14,9 +14,6 @@ Solver::Solver(Board board) {
  * @param board
  */
 void Solver::constructSolutionSteps(Board board) {
-
-    // Remove the possible boards.
-    this->boards.clear();
 
     // Process the solution board first.
     string lastReference = board.referrer;
@@ -41,7 +38,7 @@ void Solver::constructSolutionSteps(Board board) {
 }
 
 /**
- * Move a temporary block and set referencer and identifier numbers.
+ * Move a temporary block and set reference and identifier numbers.
  * @param board
  * @param blockIndex
  * @param direction
@@ -54,7 +51,7 @@ Board Solver::createMovedInstance(Board board, int blockIndex, int direction) {
     // Move the block
     tempBoard.moveBlock(blockIndex, direction);
 
-    // Set the identifier to a random number while setting the referrer to the previous board's identifier.
+    // Set the identifier to a unique hash while setting the referrer to the previous board's identifier.
     tempBoard.identifier = tempBoard.getHash();
     tempBoard.referrer = board.identifier;
 
@@ -66,53 +63,164 @@ Board Solver::createMovedInstance(Board board, int blockIndex, int direction) {
  * @param algorithm
  */
 void Solver::solve(int algorithm) {
-    Board board;
+    if (algorithm == BFS) {
+        this->solveBFS();
+    } else if (algorithm == DFS) {
+        this->solveDFS();
+    } else {
+        this->solveDijkstra();
+    }
+}
+
+void Solver::solveBFS() {
+    deque<Board> boards;
+    boards.push_back(this->board);
 
     // Loop over the queue until either the queue is empty or the solution is found.
-    while (!this->boards.empty()) {
+    while (!boards.empty()) {
 
         // Get the next board and remove it from the list.
-        board = this->boards.front();
-        this->boards.pop_front();
+        Board board = boards.front();
+        boards.pop_front();
 
         // Check if the board is solved completely.
         if (board.isCompleted()) {
 
             // The board is completed construct the solution steps.
-            this->boards.clear();
             this->constructSolutionSteps(board);
             return;
-        } else {
-            Board tempBoard;
+        }
 
-            // Construct the possible movement boards and push to the queue.
-            for (int i = 0; i < board.blocks.size(); ++i) {
-                if (board.blocks[i].isHorizontal()) {
-                    for (int j = LEFT; j <= RIGHT; ++j) {
-                        // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
-                        if (board.canMove(board.blocks[i], j)) {
-                            tempBoard = this->createMovedInstance(board, i, j);
-                            if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end()) {
-                                if (algorithm == BFS) {
-                                    this->boards.push_back(tempBoard);
-                                } else {
-                                    this->boards.push_front(tempBoard);
-                                }
-                            }
+        // Construct the possible movement boards and push to the queue.
+        for (int i = 0; i < board.blocks.size(); ++i) {
+            if (board.blocks[i].isHorizontal()) {
+                for (int j = LEFT; j <= RIGHT; ++j) {
+                    // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
+                    if (board.canMove(board.blocks[i], j)) {
+                        Board tempBoard = this->createMovedInstance(board, i, j);
+                        if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end()) {
+                            this->pastSteps[tempBoard.identifier] = tempBoard;
+                            boards.push_back(tempBoard);
                         }
                     }
-                } else {
-                    for (int j = UP; j <= DOWN; ++j) {
-                        // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
-                        if (board.canMove(board.blocks[i], j)) {
-                            tempBoard = this->createMovedInstance(board, i, j);
-                            if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end()) {
-                                if (algorithm == BFS) {
-                                    this->boards.push_back(tempBoard);
-                                } else {
-                                    this->boards.push_front(tempBoard);
-                                }
-                            }
+                }
+            } else {
+                for (int j = UP; j <= DOWN; ++j) {
+                    // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
+                    if (board.canMove(board.blocks[i], j)) {
+                        Board tempBoard = this->createMovedInstance(board, i, j);
+                        if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end()) {
+                            this->pastSteps[tempBoard.identifier] = tempBoard;
+                            boards.push_back(tempBoard);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Move the board to the past steps.
+        this->pastSteps[board.identifier] = board;
+    }
+}
+
+void Solver::solveDFS() {
+    deque<Board> boards;
+    boards.push_back(this->board);
+
+    // Loop over the queue until either the queue is empty or the solution is found.
+    while (!boards.empty()) {
+
+        // Get the next board and remove it from the list.
+        Board board = boards.front();
+        boards.pop_front();
+
+        // Check if the board is solved completely.
+        if (board.isCompleted()) {
+
+            // The board is completed construct the solution steps.
+            this->constructSolutionSteps(board);
+            return;
+        }
+
+        // Construct the possible movement boards and push to the queue.
+        for (int i = 0; i < board.blocks.size(); ++i) {
+            if (board.blocks[i].isHorizontal()) {
+                for (int j = LEFT; j <= RIGHT; ++j) {
+                    // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
+                    if (board.canMove(board.blocks[i], j)) {
+                        Board tempBoard = this->createMovedInstance(board, i, j);
+                        if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end()) {
+                            this->pastSteps[tempBoard.identifier] = tempBoard;
+                            boards.push_front(tempBoard);
+                        }
+                    }
+                }
+            } else {
+                for (int j = UP; j <= DOWN; ++j) {
+                    // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
+                    if (board.canMove(board.blocks[i], j)) {
+                        Board tempBoard = this->createMovedInstance(board, i, j);
+                        if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end()) {
+                            this->pastSteps[tempBoard.identifier] = tempBoard;
+                            boards.push_front(tempBoard);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Move the board to the past steps.
+        this->pastSteps[board.identifier] = board;
+    }
+}
+
+void Solver::solveDijkstra() {
+    map<string, unsigned> steps{};
+    steps[this->board.identifier] = 0;
+    auto cmp = [&](const Board& a, const Board& b) { return steps[a.identifier] > steps[b.identifier]; };
+    priority_queue<Board, deque<Board>, decltype(cmp)> boards(cmp);
+    boards.push(this->board);
+
+    // Loop over the queue until either the queue is empty or the solution is found.
+    while (!boards.empty()) {
+
+        // Get the next board and remove it from the list.
+        Board board = boards.top();
+        boards.pop();
+
+        // Check if the board is solved completely.
+        if (board.isCompleted()) {
+
+            // The board is completed construct the solution steps.
+            this->constructSolutionSteps(board);
+            return;
+        }
+
+        const unsigned step = steps[board.identifier];
+
+        // Construct the possible movement boards and push to the queue.
+        for (int i = 0; i < board.blocks.size(); ++i) {
+            if (board.blocks[i].isHorizontal()) {
+                for (int j = LEFT; j <= RIGHT; ++j) {
+                    // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
+                    if (board.canMove(board.blocks[i], j)) {
+                        Board tempBoard = this->createMovedInstance(board, i, j);
+                        if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end() || step + 1 < steps[tempBoard.identifier]) {
+                            steps[tempBoard.identifier] = step + 1;
+                            this->pastSteps[tempBoard.identifier] = tempBoard;
+                            boards.push(tempBoard);
+                        }
+                    }
+                }
+            } else {
+                for (int j = UP; j <= DOWN; ++j) {
+                    // If the board can move, create the moved instance with appropriate referrer and identifier numbers.
+                    if (board.canMove(board.blocks[i], j)) {
+                        Board tempBoard = this->createMovedInstance(board, i, j);
+                        if (this->pastSteps.find(tempBoard.identifier) == this->pastSteps.end() || step + 1 < steps[tempBoard.identifier]) {
+                            steps[tempBoard.identifier] = step + 1;
+                            this->pastSteps[tempBoard.identifier] = tempBoard;
+                            boards.push(tempBoard);
                         }
                     }
                 }

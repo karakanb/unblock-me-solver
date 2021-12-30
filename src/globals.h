@@ -18,7 +18,7 @@ enum {
 };
 
 enum {
-    BFS, DFS
+    BFS, DFS, DIJKSTRA
 };
 
 inline void printSeperator() {

@@ -16,14 +16,14 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    srand(time(NULL));
-
     // Open the files.
     int algorithm = 0;
     if (strcmp(argv[1], "bfs") == 0) {
         algorithm = BFS;
     } else if (strcmp(argv[1], "dfs") == 0) {
         algorithm = DFS;
+    } else if (strcmp(argv[1], "dijkstra") == 0) {
+        algorithm = DIJKSTRA;
     } else {
         errorOutput();
         return -1;
@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) {
 
     ofstream outputFile(argv[3]);
     if (!outputFile.is_open()) {
+        inputFile.close();
         errorOutput("There was a problem with the output file, please verify that the output file is there.");
         return -1;
     }
@@ -107,8 +108,8 @@ void errorOutput(string errorMessage) {
     cerr << endl << endl << "============================================================" << endl;
     if (errorMessage.compare("") == 0) {
         cerr <<
-             "Error: You need to provide the algorithm to solve the problem (bfs or dfs) with the names of the "
-                     "input and output files." << endl;
+             "Error: You need to provide the algorithm to solve the problem (bfs, dfs or dijkstra) with the "
+                     "names of the input and output files." << endl;
     } else {
         cerr << errorMessage << endl;
     }
