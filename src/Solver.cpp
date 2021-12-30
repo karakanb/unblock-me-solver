@@ -51,12 +51,13 @@ Board Solver::createMovedInstance(Board board, int blockIndex, int direction) {
     Board tempBoard;
     tempBoard = board;
 
-    // Set the identifier to a random number while setting the referrer to the previous board's identifier.
-    tempBoard.identifier = board.getHash();
-    tempBoard.referrer = board.identifier;
-
     // Move the block
     tempBoard.moveBlock(blockIndex, direction);
+
+    // Set the identifier to a random number while setting the referrer to the previous board's identifier.
+    tempBoard.identifier = tempBoard.getHash();
+    tempBoard.referrer = board.identifier;
+
     return tempBoard;
 }
 
