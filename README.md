@@ -1,8 +1,7 @@
 # Unblock Me Solver
-The Unblock Me game was a game that was popular when I was in high school, and we spent a lot of time on it. After years, when the project to solve Unblock Me in *Analysis of Algorithms* course, it became exciting to work on the game I spent a lot of time with, which led to the implementation of this project. 
+The Unblock Me game was a game that was popular when I was in high school, and we spent a lot of time on it. After years, when the project to solve Unblock Me in *Analysis of Algorithms* course, it became exciting to work on the game I spent a lot of time with, which led to the implementation of this project.
 In case you don't know what the Unblock Me is, it is a simple game where you move blocks to take your target block out, as follows:
-   
-   
+
 ![Unblock Me Screenshot](http://logonubul.com/images/unblock-me.png)
 
 The aim was to solve this game by using two of the most popular search algorithms: *BFS* and *DFS*.
@@ -35,7 +34,7 @@ cmake CMakeLists.txt    # Create the makefile.
 make                    # Build the project using make.
 ```
 
-The `make` command will create an exacutable called `unblock-me-solver.out`, which will be used to run the program. The program can be run with the following scheme:
+The `make` command will create an executable called `unblock-me-solver.out`, which will be used to run the program. The program can be run with the following scheme:
 
 `./unblock-me-solver.out ALGORITHM_TYPE INPUT_PATH OUTPUT_PATH`
 
@@ -53,12 +52,12 @@ The program will output the initial state of the board, the steps used to get to
 
 Initial board state:
 
-0 0 0 6 0 0
-0 0 0 6 7 0
-2 1 1 6 7 0
-2 4 0 0 0 0
-3 4 0 0 0 0
-3 0 5 5 0 0
+. . . F . .
+. . . F G .
+B A A F G .
+B D . . . .
+C D . . . .
+C . E E . .
 
 ===========================
 ===========================
@@ -71,72 +70,72 @@ Number of steps to solve:  6
 
 Step 0
 
-0 0 0 6 0 0
-0 0 0 6 7 0
-2 1 1 6 7 0
-2 4 0 0 0 0
-3 4 0 0 0 0
-3 0 5 5 0 0
+. . . F . .
+. . . F G .
+B A A F G .
+B D . . . .
+C D . . . .
+C . E E . .
 
 ===========================
 ===========================
 
 Step 1
 
-0 0 0 6 0 0
-0 0 0 6 0 0
-2 1 1 6 7 0
-2 4 0 0 7 0
-3 4 0 0 0 0
-3 0 5 5 0 0
+. . . F . .
+. . . F G .
+B A A F G .
+B D . . . .
+C D . . . .
+C E E . . .
 
 ===========================
 ===========================
 
 Step 2
 
-0 0 0 0 0 0
-0 0 0 6 0 0
-2 1 1 6 7 0
-2 4 0 6 7 0
-3 4 0 0 0 0
-3 0 5 5 0 0
+. . . . . .
+. . . F G .
+B A A F G .
+B D . F . .
+C D . . . .
+C E E . . .
 
 ===========================
 ===========================
 
 Step 3
 
-0 0 0 0 0 0
-0 0 0 0 0 0
-2 1 1 6 7 0
-2 4 0 6 7 0
-3 4 0 6 0 0
-3 0 5 5 0 0
+. . . . . .
+. . . . G .
+B A A F G .
+B D . F . .
+C D . F . .
+C E E . . .
 
 ===========================
 ===========================
 
 Step 4
 
-0 0 0 0 0 0
-0 0 0 0 0 0
-2 1 1 6 7 0
-2 4 0 6 7 0
-3 4 0 6 0 0
-3 5 5 0 0 0
+. . . . . .
+. . . . G .
+B A A . G .
+B D . F . .
+C D . F . .
+C E E F . .
 
 ===========================
 ===========================
 
 Step 5
 
-0 0 0 0 7 0
-0 0 0 0 7 0
-2 1 1 0 0 0
-2 4 0 6 0 0
-3 4 0 6 0 0
-3 5 5 6 0 0
+. . . . G .
+. . . . G .
+B A A . . .
+B D . F . .
+C D . F . .
+C E E F . .
 
 ===========================
 ===========================
@@ -144,14 +143,14 @@ Step 5
 The puzzle is solved.
 The total time in seconds the algorithm took to solve the puzzle:  0.517799
 The total number of boards seen to find the solution including the initial state:  164
-The block with 1s represent the block which is asked to be rescued.
+The block with letter 'A' represents the block which is asked to be rescued.
 The output states are written to the output file you provided.
 
 ===========================
 
 ```
 
-The `The total number of boards seen to find the solution including the initial state` number indicates the number of different board states that are created while searching for the solution. In the 2D representations, the block that is represented with 1s indicates the prisoner block, and the escape is at the same row with it, which means if there are no obstacles from the block 1 to the right wall of the board, the board is solved.
+The `The total number of boards seen to find the solution including the initial state` number indicates the number of different board states that are created while searching for the solution. In the 2D representations, the block that is represented with letter 'A' indicates the prisoner block, and the escape is at the same row with it, which means if there are no obstacles from the block 'A' to the right wall of the board, the board is solved.
 
 ## Outcomes
 By running the algorithms with different datasets, it becomes pretty trivial to see the differences. First of all, **if the aim is to find the solution with the least number of steps, it needs to be solved with BFS**. However, **if the aim is to find the fastest solution, the DFS is the way to go.**
