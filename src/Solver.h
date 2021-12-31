@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <map>
+#include <queue>
 #include "globals.h"
 #include "Board.h"
 
@@ -10,10 +11,10 @@ class Solver {
 public:
     Solver(const Board board);
 
-    unsigned long numberOfNodes = 0;
+    size_t numberOfNodes = 0;
     map<string, Board> pastSteps;
-    deque<Board> boards;
     vector<Board> steps;
+    Board board;
 
     void solve(int algorithm);
 private:
@@ -21,6 +22,10 @@ private:
     void constructSolutionSteps(Board board);
 
     Board createMovedInstance(Board board, int blockIndex, int direction);
+
+    void solveBFS();
+    void solveDFS();
+    void solveDijkstra();
 };
 
 

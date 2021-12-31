@@ -9,7 +9,9 @@ The aim was to solve this game by using two of the most popular search algorithm
 ## Approach
 The main approach was constructing the graph that will be searched with different states of the board by moving each of the blocks one by one. The expected outcome of the project is comparing these two algorithms by examining how they behave for this problem. The solution basically moves each of the blocks on the board for each of the possible states and checks if this board is seen before; if the board is not seen before, it is added to the list that is iterated over. The algorithm checks the current board, and if it is solved, it breaks the loops and screams "EUREKA!", which means the board is solved. Then, it backtracks the steps that brought it to the current solution, and prints the board at each state.
 
-Those two algorithms, BFS and DFS, are implemented with recursion usually, however I had some problem with the stack size with a wrong implementation, therefore implemented it using a double-ended queue which simplifies the debugging process and differences between *BFS* and *DFS*.
+Those two algorithms, BFS and DFS, are implemented with recursion usually, however I had some problem with the stack size with a wrong implementation, therefore implemented it using queues which simplifies the debugging process and differences between *BFS* and *DFS*.
+
+Whereas *BFS* uses a FIFO queue, Dijkstra's algorithm utilizes a priority queue and prefers boards with less steps first. Dijkstra's algorithm is suitable to find the solution that requires the minimal number of steps.
 
 ## Implementation
 It basically moves every block on the board, creates a new board with the moved block and adds it to the queue if it is not seen before. However, the main problem with this implementation was backtracking the solution steps. At first I tried to solve this by returning the boards from the recursion, however it became harder to manage and I could not get out of it, therefore I implemented an ID-based backtracking chain system. Each of the boards have an ID that is constructed by concatenating cell values of the 2D array version of the board, which means since there will be no duplicate boards in the queue, this hash will result to a unique ID for each board. Every possible board that is generated from the current board gets the ID of the current board as the referrer ID, which allows to trace parent of every board. Seen boards are pushed to a map with their ID as the key, and if the solution is found for a board, the `constructSolutionSteps` method of the `Solver` class traces this chain back to the first board state. Since every board has their ID and their referrer ID, it can easily follow these steps with the map implementation in constant time.
@@ -38,11 +40,12 @@ The `make` command will create an executable called `unblock-me-solver.out`, whi
 
 `./unblock-me-solver.out ALGORITHM_TYPE INPUT_PATH OUTPUT_PATH`
 
-Available algorithm types are `bfs` and `dfs`, therefore the program can be run exactly with one of the following commands:
+Available algorithm types are `bfs`, `dfs` and `dijkstra`, therefore the program can be run exactly with one of the following commands:
 
 ```
-./unblock-me-solver.out dfs data/input.txt data/output.txt # With DFS
 ./unblock-me-solver.out bfs data/input.txt data/output.txt # With BFS
+./unblock-me-solver.out dfs data/input.txt data/output.txt # With DFS
+./unblock-me-solver.out dijkstra data/input.txt data/output.txt # With BFS
 ```
 
 The program will output the initial state of the board, the steps used to get to the solution, and the basic statistics such as running time and number of steps:
@@ -158,7 +161,7 @@ By running the algorithms with different datasets, it becomes pretty trivial to 
 With BFS, it took 5 steps to solve the example board in 0.517799 seconds. With DFS, it took 20 steps to solve the example board in  0.00357 seconds. It is pretty clear that BFS finds the shortest path to solution where DFS finds the fastest solution. With this expected outcome, it can be said that the algorithm implementations seem to be correct.
 
 ## Further Reading
-In order to learn more about breadth-first search and depth-first search, the Wikipedia pages for [BFS](https://en.wikipedia.org/wiki/Breadth-first_search) and [DFS](https://en.wikipedia.org/wiki/Depth-first_search) and their *External Links* sections may be helpful.
+In order to learn more about breadth-first search and depth-first search, the Wikipedia pages for [BFS](https://en.wikipedia.org/wiki/Breadth-first_search), [DFS](https://en.wikipedia.org/wiki/Depth-first_search) and [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) and their *External Links* sections may be helpful.
 
 ## Credits
 The base idea of the project is inspired by the amazing work that is done by [Thanassis Tsiodras](https://github.com/ttsiodras). His blog post about the subject can be found [here](https://www.thanassis.space/unblock.html), where he uses the iOS version of the application and by processing the screenshot of the board, he maps the board to a software-based representation, where he uses breadth-first search to find the solution board. The code he used can be found [in this GitHub repository](https://github.com/ttsiodras/UnblockMeSolver).
